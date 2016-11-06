@@ -7,25 +7,26 @@ package ABD_Alumnos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.*;
 
-
 /**
  *
  * @author 2DAM - Judit
  */
-public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionListener {
+public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionListener, MouseListener {
 
     FrmAlumnos frm;
     private claseConexion conexion;
     private claseNegocio negocio;
     private FichaAlumno fichalumno;
     private JasperPrint jsPrint;
-    
+
     public ClaseEventosAlumnos() {
         frm = new FrmAlumnos(this);
         //FrmPrincipal frm=new FrmPrincipal();
@@ -42,7 +43,6 @@ public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionLis
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "Buscar") {
             try {
-              
                 negocio.buscar();
                 //si la tabla de registros no está vacía
                 if (conexion.getRs().next()) {
@@ -88,5 +88,35 @@ public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionLis
         frm.getjTFNombreAlu().setText(fichalumno.getNombre());
         frm.getjTFApellido1Alu().setText(fichalumno.getApellido1());
         frm.getjTFApellido2Alu().setText(fichalumno.getApellido2());
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+       
+            //Cuando clicamos en Buscar, se muestran los datos de los alumnos en los Textfields y en la tabla también
+            // www.programandoconcafe.com/2010/11/java-llenar-un-jtable-con-resultset.html
+            
+            negocio.cargarDatosAlumno();         
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

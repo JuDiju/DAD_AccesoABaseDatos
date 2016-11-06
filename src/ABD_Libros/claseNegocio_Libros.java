@@ -34,14 +34,12 @@ public class claseNegocio_Libros {
     }
     
      public void buscar() {
-        //conexionLibros.crearConexion();
         conectar(); 
         String consulta = "Select * from libros";
         conexionLibros.consultaConInsertUpdateODelete(consulta);
     }
     
      public void altas(FichaLibros fichLibro) {
-        //claseConexion_Libros.crearConexion();
         conectar();
         //Insert into libros(codigo, titulo, autor, editorial, asignatura, estado) values ('41', 'EjemploTitulo', 'Pepe', 'editorialEje', 'ejemploClase', 'Nuevo');
         String consulta = "Insert into libros(codigo, titulo, autor, editorial, asignatura, estado) values ('" + fichLibro.getCodigo() + "', '"
