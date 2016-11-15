@@ -8,13 +8,8 @@ package accesoabasedatos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -31,7 +26,7 @@ public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionLis
         frm = new FrmPrincipal(this);
         //FrmPrincipal frm=new FrmPrincipal();
         frm.setVisible(true);
-
+        
         //conexion = claseConexion.getInstance();
         conexion = new claseConexion();
         negocio = new claseNegocio(conexion);
@@ -40,7 +35,6 @@ public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionLis
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (e.getActionCommand() == "Buscar") {
             try {
                 negocio.buscar();
@@ -77,31 +71,6 @@ public class ClaseEventosAlumnos extends javax.swing.JFrame implements ActionLis
             fichalumno.setApellido1(frm.getjTFApellido1Alu().getText());
             fichalumno.setApellido2(frm.getjTFApellido2Alu().getText());
             negocio.altas(fichalumno);
-        } else if (e.getActionCommand() == "Generar informe de alumnos") {
-
-            try {
-                Map params = new HashMap();
-                params.put("TITULO", "PAISES");
-                params.put("FECHA", new java.util.Date());
-                JasperReport report = JasperCompileManager.compileReport("report1.jrxml");
-                JasperPrint rellenar = JasperFillManager.fillReport(report, params, conexion);
-                // Exporta el informe a PDF
-                JasperExportManager.exportReportToPdfFile(rellenar, "C:\\Users\\2DAM - Judit\\Documents\\NetBeansProjects\\AccesoABaseDatos\\src\\accesoabasedatos\\reportAlumnos.pdf");
-                //Para visualizar el pdf directamente desde java
-                JasperViewer.viewReport(rellenar, false);
-                //TERMINAR
-                /*
-                negocio.buscar();
-                JasperReport reporte = (JasperReport) JRLoader.loadObject("report1.jasper");
-                JRExporter exporter = new JRPdfExporter();
-                exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("reporte1.pdf"));
-                exporter.exportReport();
-                 */
-            } catch (JRException ex) {
-                Logger.getLogger(ClaseEventosAlumnos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
         }
     }
 

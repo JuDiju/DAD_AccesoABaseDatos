@@ -15,7 +15,8 @@ public class FichaAlumno {
     private String Nombre;
     private String Apellido1;
     private String Apellido2;
-
+    private int Registro;
+    
     public FichaAlumno() {
     }
 
@@ -49,5 +50,13 @@ public class FichaAlumno {
 
     public void setApellido2(String Apellido2) {
         this.Apellido2 = Apellido2;
+    }
+    
+     public int getRegistro() {
+        return Registro;
+    }
+
+    public void setRegistro(int Registro) {
+        this.Registro = Registro;
     }
 }
