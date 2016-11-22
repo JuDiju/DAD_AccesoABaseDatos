@@ -16,6 +16,7 @@ public class FrmMenu extends javax.swing.JFrame {
      */
     public FrmMenu() {
         initComponents();
+        setLocationRelativeTo(null);
         ClaseEventosMenu cleventos = new ClaseEventosMenu(this);
         BtnAlumnos.addActionListener(cleventos);
         BtnInformes.addActionListener(cleventos);

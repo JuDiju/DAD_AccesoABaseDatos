@@ -1,7 +1,9 @@
 package ABD_Alumnos;
 
 import java.sql.SQLException;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,7 +21,7 @@ public class NegocioAlumno {
     public NegocioAlumno(ConexionAlumno conn) {
         conexion = conn;
     }
-
+    
     public void altas(FichaAlumno fichalumno) {
         //claseConexion.crearConexion();
         conectar();
@@ -97,19 +99,39 @@ public class NegocioAlumno {
         return alumno;
     }
 
-    public void buscarTextField() throws SQLException {
+    public DefaultTableModel buscarTextField(String buscar) {
 
-        //public void Buscar(String valor, String filtro, JTable tablacontactos) {
-        //String[] columnas = {"Registro", "Dni", "Nombre", "Apellido1", "Apellido2"};
-        String[] registro = new String[5];
-        String SSQL;
-        conectar();
-
-        while (conexion.getRs().next()) {
-        }
-
+        DefaultTableModel modeloTabla;
         
-        /*conectar();
+        String[] columnas = {"registro", "dni", "nombre", "apellido1", "apellido2"};
+        String[] registro = new String[5];
+
+        modeloTabla = new DefaultTableModel(null, columnas);
+        
+        String SSQL;
+        SSQL = "select * from alumnos where dni like '%" + buscar + "%' "
+                + " or nombre like '%" + buscar +  "%' or apellido1 like '%" 
+                + buscar + "%' or apellido2 like '%" + "%' order by nombre" ;
+        try {
+            conectar();
+
+            while (conexion.getRs().next()) {
+                registro[0] = conexion.getRs().getString("registro");
+                registro[1] = conexion.getRs().getString("dni");
+                registro[2] = conexion.getRs().getString("nombre");
+                registro[3] = conexion.getRs().getString("apellido1");
+                registro[4] = conexion.getRs().getString("apellido2");
+
+                modeloTabla.addRow(registro);
+            }
+
+        } catch (SQLException e) {
+
+        }
+        return modeloTabla;
+    }
+
+    /*conectar();
         FichaAlumno alumno = null;
          //Obtenemos el valor del JTextField para el filtro
         String filtro = DlgAlumnos.getTextoABuscar().getText();
@@ -120,7 +142,7 @@ public class NegocioAlumno {
             ResultSet resultado = sentencia.executeQuery(sql);
 
             while (resultado.next()) {
-                //son 3 columnas, la dimesion del objeto datos de 3
+                //son 3 columnas, la dimension del objeto datos de 3
                 Object[] datos = new Object[3];
                 for (int row = 0; row < 3; row++) {
                     datos[row] = resultado.getObject(row+1);
@@ -133,6 +155,4 @@ public class NegocioAlumno {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-    }
-
 }

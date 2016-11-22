@@ -5,6 +5,7 @@
  */
 package Principal;
 
+import ABD_Alumnos.ClaseEventosAlumnos;
 import ABD_Alumnos.DlgAlumnos;
 import ABD_Alumnos.FichaAlumno;
 import ABD_Alumnos.ConexionAlumno;
@@ -34,8 +35,8 @@ public class ClaseEventosMenu extends javax.swing.JFrame implements ActionListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "Alumnos") {
-            DlgAlumnos dlgAlu = new DlgAlumnos(frm, true);
-            dlgAlu.setVisible(true);
+            ClaseEventosAlumnos cleventos = new ClaseEventosAlumnos();
+            //dlgAlu.setVisible(true);
         }else if (e.getActionCommand() == "Libros") {
             //DlgLibros dlgLibros = new DlgLibros(frm, true, null);
             //dlgLibros.setVisible(true);

@@ -1,10 +1,12 @@
 package ABD_Alumnos;
 
+import Principal.ClaseEventosMenu;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.JDialog;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,10 +14,11 @@ import javax.swing.JTextField;
  */
 public class DlgAlumnos extends javax.swing.JDialog {
 
-    public DlgAlumnos(java.awt.Frame parent, boolean modal) {
+    public DlgAlumnos(java.awt.Frame parent, boolean modal, ClaseEventosAlumnos cleventos) {
         super(parent, modal);
         initComponents();
-        ClaseEventosAlumnos cleventos = new ClaseEventosAlumnos(this);
+        setLocationRelativeTo(null);
+        
         jBIniciar.addActionListener(cleventos);
         jBAnterior.addActionListener(cleventos);
         jBSiguiente.addActionListener(cleventos);
@@ -26,8 +29,11 @@ public class DlgAlumnos extends javax.swing.JDialog {
         jTablaAlumnos.addMouseListener(cleventos);
         jBInformeAlu.addActionListener(cleventos);
     }
+
+    DlgAlumnos(Object object, boolean b, ClaseEventosAlumnos aThis) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-       
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -230,11 +236,6 @@ public class DlgAlumnos extends javax.swing.JDialog {
 
         textoABuscar.setForeground(new java.awt.Color(153, 153, 153));
         textoABuscar.setToolTipText("");
-        textoABuscar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                textoABuscarKeyTyped(evt);
-            }
-        });
 
         jBBuscar.setText("Buscar");
 
@@ -289,12 +290,8 @@ public class DlgAlumnos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverActionPerformed
-        System.exit(EXIT_ON_CLOSE);//MODIFICAR PARA QUE SE CIERRE ESTA VENTANA Y SE QUEDE LA DEL MENÚ
+       this.dispose();
     }//GEN-LAST:event_BtnVolverActionPerformed
-
-    private void textoABuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoABuscarKeyTyped
-        
-    }//GEN-LAST:event_textoABuscarKeyTyped
 
         
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -374,9 +371,6 @@ public class DlgAlumnos extends javax.swing.JDialog {
         this.textoABuscar = textoABuscar;
     }
 
-    public void iniciarTabla(ResultSet rs) {
-        VistaTabla v = new VistaTabla(rs);
-        jTablaAlumnos.setModel(v);        
-    }
+   
     
 }

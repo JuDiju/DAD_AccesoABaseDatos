@@ -409,9 +409,6 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
-      <Events>
-        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="textoABuscarKeyTyped"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jBBuscar">
       <Properties>
