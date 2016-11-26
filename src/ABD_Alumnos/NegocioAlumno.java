@@ -1,9 +1,7 @@
 package ABD_Alumnos;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 public class NegocioAlumno {
 
     final ConexionAlumno conexion;
+    ResultSet rs;
     public static final int COLUMN_ALUMNO_REGISTRO = 0;
     public static final int COLUMN_ALUMNO_DNI = 1;
     public static final int COLUMN_ALUMNO_NOMBRE = 2;
@@ -20,8 +19,9 @@ public class NegocioAlumno {
 
     public NegocioAlumno(ConexionAlumno conn) {
         conexion = conn;
+        rs = conexion.getRs();
     }
-    
+
     public void altas(FichaAlumno fichalumno) {
         //claseConexion.crearConexion();
         conectar();
@@ -31,22 +31,40 @@ public class NegocioAlumno {
                 + fichalumno.getDni() + "', '" + fichalumno.getNombre() + "', '" + fichalumno.getApellido1() + "', '" + fichalumno.getApellido2() + "')";
         conexion.consultaConSelect(consulta);
     }
-
-    public void buscar() {
+    
+    //ARREGLAR
+    public void bajas(FichaAlumno fichalumno) {
         //claseConexion.crearConexion();
         conectar();
+        String consulta = "Insert into alumnos(registro, dni, nombre, apellido1, apellido2) values ('" + fichalumno.getRegistro() + "', '"
+                + fichalumno.getDni() + "', '" + fichalumno.getNombre() + "', '" + fichalumno.getApellido1() + "', '" + fichalumno.getApellido2() + "')";
+        conexion.consultaConSelect(consulta);
+    }
+
+    public void iniciar() {
+        conectar();
         String consulta = "Select * from alumnos";
+        conexion.consultaConInsertUpdateODelete(consulta);
+    }
+
+    public void buscarEnTextField(String fichaAlumno) {
+        //conectar();
+        String consulta = "select * from alumnos where dni like '%" + fichaAlumno + "%' "
+                + " or nombre like '%" + fichaAlumno + "%' or apellido1 like '%"
+                + fichaAlumno + "%' or apellido2 like '%" + fichaAlumno + "%' order by nombre";
         conexion.consultaConInsertUpdateODelete(consulta);
     }
 
     public FichaAlumno cargarDatosAlumno() {
         FichaAlumno fichaalu = new FichaAlumno();
         try {
-            fichaalu.setRegistro(conexion.getRs().getInt("registro"));
-            fichaalu.setDni(conexion.getRs().getString("dni"));
-            fichaalu.setNombre(conexion.getRs().getString("nombre"));
-            fichaalu.setApellido1(conexion.getRs().getString("apellido1"));
-            fichaalu.setApellido2(conexion.getRs().getString("apellido2"));
+            rs = conexion.getRs();
+            fichaalu.setRegistro(rs.getInt("registro"));
+            fichaalu.setDni(rs.getString("dni"));
+            fichaalu.setNombre(rs.getString("nombre"));
+            fichaalu.setApellido1(rs.getString("apellido1"));
+            fichaalu.setApellido2(rs.getString("apellido2"));
+            
             //frmP.getjTFDniAlu().setText(conexion.getRs().getString("dni"));
             //frmP.getjTFNombreAlu().setText(conexion.getRs().getString("nombre"));
             //frmP.getjTFApellido1Alu().setText(conexion.getRs().getString("apellido1"));
@@ -70,8 +88,8 @@ public class NegocioAlumno {
 
     public int NumeroRegistros() throws Exception {
         int fila = -1;
-        if (conexion.getRs().last()) {
-            fila = conexion.getRs().getRow();
+        if (rs.last()) {
+            fila = rs.getRow();
         }
         return fila;
     }
@@ -79,15 +97,14 @@ public class NegocioAlumno {
     //los metadatos empiezan en base 1, por eso +1
     public FichaAlumno getAlumno(int row) throws Exception {
         FichaAlumno alumno = null;
-        if (conexion.getRs().absolute(row)) {
-
+        if (rs.absolute(row)) {
             alumno = new FichaAlumno();
 
-            int registro = conexion.getRs().getInt(COLUMN_ALUMNO_REGISTRO + 1);
-            String dni = conexion.getRs().getString(COLUMN_ALUMNO_DNI + 1);
-            String nombre = conexion.getRs().getString(COLUMN_ALUMNO_NOMBRE + 1);
-            String apellido1 = conexion.getRs().getString(COLUMN_ALUMNO_APELLIDO1 + 1);
-            String apellido2 = conexion.getRs().getString(COLUMN_ALUMNO_APELLIDO2 + 1);
+            int registro = rs.getInt(COLUMN_ALUMNO_REGISTRO + 1);
+            String dni = rs.getString(COLUMN_ALUMNO_DNI + 1);
+            String nombre = rs.getString(COLUMN_ALUMNO_NOMBRE + 1);
+            String apellido1 = rs.getString(COLUMN_ALUMNO_APELLIDO1 + 1);
+            String apellido2 = rs.getString(COLUMN_ALUMNO_APELLIDO2 + 1);
 
             alumno.setRegistro(registro);
             alumno.setDni(dni);
@@ -99,7 +116,7 @@ public class NegocioAlumno {
         return alumno;
     }
 
-    public DefaultTableModel buscarTextField(String buscar) {
+    /*public DefaultTableModel buscarTextField(String buscar) {
 
         DefaultTableModel modeloTabla;
         
@@ -129,30 +146,5 @@ public class NegocioAlumno {
 
         }
         return modeloTabla;
-    }
-
-    /*conectar();
-        FichaAlumno alumno = null;
-         //Obtenemos el valor del JTextField para el filtro
-        String filtro = DlgAlumnos.getTextoABuscar().getText();
-    
-        String consulta = "DELETE FROM alumnos WHERE Registro = " + alumno.getRegistro();
-    
-            String consulta = "Select * from tabla where Nombre like '%" + getTextoABuscar().getText()+ "%'";
-            ResultSet resultado = sentencia.executeQuery(sql);
-
-            while (resultado.next()) {
-                //son 3 columnas, la dimension del objeto datos de 3
-                Object[] datos = new Object[3];
-                for (int row = 0; row < 3; row++) {
-                    datos[row] = resultado.getObject(row+1);
-
-                }
-                modelo.addRow(datos);
-            }
-
-            jTable1.setModel(modelo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+    }*/
 }

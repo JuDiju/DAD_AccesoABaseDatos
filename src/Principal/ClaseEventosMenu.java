@@ -18,35 +18,35 @@ import net.sf.jasperreports.engine.JasperPrint;
  *
  * @author 2DAM - Judit
  */
-public class ClaseEventosMenu extends javax.swing.JFrame implements ActionListener{
+public class ClaseEventosMenu extends javax.swing.JFrame implements ActionListener {
 
-   
     FrmMenu frm;
     DlgAlumnos dlgAlu;
     private ConexionAlumno conexion;
     private NegocioAlumno negocio;
     private FichaAlumno fichalumno;
     private JasperPrint jsPrint;
-    
-     public ClaseEventosMenu(FrmMenu frm) {
+
+    public ClaseEventosMenu(FrmMenu frm) {
         this.frm = frm;
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "Alumnos") {
             ClaseEventosAlumnos cleventos = new ClaseEventosAlumnos();
+            cleventos.iniciarDialog(frm);
             //dlgAlu.setVisible(true);
-        }else if (e.getActionCommand() == "Libros") {
+        } else if (e.getActionCommand() == "Libros") {
             //DlgLibros dlgLibros = new DlgLibros(frm, true, null);
             //dlgLibros.setVisible(true);
-        }else if (e.getActionCommand() == "Préstamos") {
+        } else if (e.getActionCommand() == "Préstamos") {
             //DlgPrestamos dlgpres = new DlgPrestamos(frm, true, null);
             //dlgpres.setVisible(true);
-        }else if (e.getActionCommand() == "Informes") {
+        } else if (e.getActionCommand() == "Informes") {
             //DlgInforme dlgInforme = new DlgInforme(frm, true, null);
             //dlgInforme.setVisible(true);
         }
     }
-    
+
 }

@@ -1,12 +1,6 @@
 package ABD_Alumnos;
 
-import Principal.ClaseEventosMenu;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import javax.swing.JDialog;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,14 +12,14 @@ public class DlgAlumnos extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        
+
         jBIniciar.addActionListener(cleventos);
         jBAnterior.addActionListener(cleventos);
         jBSiguiente.addActionListener(cleventos);
         jBAlta.addActionListener(cleventos);
         jBBajas.addActionListener(cleventos);
         jBBuscar.addActionListener(cleventos);
-        
+
         jTablaAlumnos.addMouseListener(cleventos);
         jBInformeAlu.addActionListener(cleventos);
     }
@@ -33,7 +27,7 @@ public class DlgAlumnos extends javax.swing.JDialog {
     DlgAlumnos(Object object, boolean b, ClaseEventosAlumnos aThis) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -290,10 +284,10 @@ public class DlgAlumnos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVolverActionPerformed
-       this.dispose();
+        dispose();
     }//GEN-LAST:event_BtnVolverActionPerformed
 
-        
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnVolver;
     private javax.swing.JButton jBAlta;
@@ -354,16 +348,16 @@ public class DlgAlumnos extends javax.swing.JDialog {
     public void setjTFNombreAlu(JTextField jTFNombreAlu) {
         this.jTFNombreAlu = jTFNombreAlu;
     }
-    
-     public JTextField getjTFRegistro() {
+
+    public JTextField getjTFRegistro() {
         return jTFRegistro;
     }
 
     public void setjTFRegistro(JTextField jTFRegistro) {
         this.jTFRegistro = jTFRegistro;
     }
-    
-       public JTextField getTextoABuscar() {
+
+    public JTextField getTextoABuscar() {
         return textoABuscar;
     }
 
@@ -371,6 +365,4 @@ public class DlgAlumnos extends javax.swing.JDialog {
         this.textoABuscar = textoABuscar;
     }
 
-   
-    
 }
