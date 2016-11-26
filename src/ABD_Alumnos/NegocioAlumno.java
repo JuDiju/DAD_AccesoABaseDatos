@@ -20,11 +20,14 @@ public class NegocioAlumno {
     public static final int COLUMN_ALUMNO_APELLIDO1 = 3;
     public static final int COLUMN_ALUMNO_APELLIDO2 = 4;
 
-    public NegocioAlumno(ConexionAlumno conn) {
-        conexion = conn;
-        rs = conexion.getRs();
+    public NegocioAlumno() {
+        conexion = new ConexionAlumno();
     }
-
+    
+    public ResultSet getRsDeConexion(){
+        return conexion.getRs();
+    }
+    
     public void altas(FichaAlumno fichalumno) {
         try {
             //claseConexion.crearConexion();
@@ -34,8 +37,9 @@ public class NegocioAlumno {
             String consulta = "Insert into alumnos(registro, dni, nombre, apellido1, apellido2) values ('" + fichalumno.getRegistro() + "', '"
                     + fichalumno.getDni() + "', '" + fichalumno.getNombre() + "', '" + fichalumno.getApellido1() + "', '" + fichalumno.getApellido2() + "')";
             conexion.consultaConInsertUpdateODelete(consulta);
+            
             //if(conexion.consultaConInsertUpdateODelete() == 1){ //arreglar condicion. Que compruebe que se ha añadido un registro de la tabla
-            JOptionPane.showMessageDialog(null, "Registro añadido");
+                //JOptionPane.showMessageDialog(null, "Registro añadido");
             //}
         } catch (Exception ex) {
             Logger.getLogger(NegocioAlumno.class.getName()).log(Level.SEVERE, null, ex);
@@ -46,8 +50,9 @@ public class NegocioAlumno {
         conectar();
         String consulta = "delete from alumnos where registro = " + fichalumno.getRegistro();
         conexion.consultaConInsertUpdateODelete(consulta);
+        
         //if(conexion.consultaConInsertUpdateODelete(consulta) == 0){ //arreglar condicion. Que compruebe que se ha quitado un registro de la tabla
-        JOptionPane.showMessageDialog(null, "Registro eliminado");
+            //JOptionPane.showMessageDialog(null, "Registro eliminado");
         //}
     }
 

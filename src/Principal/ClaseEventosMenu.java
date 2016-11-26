@@ -34,9 +34,8 @@ public class ClaseEventosMenu extends javax.swing.JFrame implements ActionListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "Alumnos") {
-            ClaseEventosAlumnos cleventos = new ClaseEventosAlumnos();
-            cleventos.iniciarDialog(frm);
-            //dlgAlu.setVisible(true);
+            ClaseEventosAlumnos cleventos = new ClaseEventosAlumnos(frm);
+            
         } else if (e.getActionCommand() == "Libros") {
             //DlgLibros dlgLibros = new DlgLibros(frm, true, null);
             //dlgLibros.setVisible(true);

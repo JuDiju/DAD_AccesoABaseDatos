@@ -6,6 +6,7 @@
 package ABD_Alumnos;
 
 import static ABD_Alumnos.DlgAlumnos.jTablaAlumnos;
+import Principal.FrmMenu;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,87 +27,90 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
     //FrmAlumnos frm;
     DlgAlumnos dlgAlu;
     ResultSet rs;
-    private ConexionAlumno conexion;
+   // private ConexionAlumno conexion;
     private NegocioAlumno negocio;
     private FichaAlumno fichalumno;
+    
     private JasperPrint jsPrint;
     // private VistaTablaAlumnos rsmodel;
 
-    public ClaseEventosAlumnos() {
+    public ClaseEventosAlumnos(FrmMenu frmmenu) {
         //frm = new FrmAlumnos(this);
         //FrmPrincipal frm=new FrmPrincipal();
         //frm.setVisible(true);
 
         //conexion = claseConexion.getInstance();
         //this.dlgAlu = dlgAlu;
-        conexion = new ConexionAlumno();
-        negocio = new NegocioAlumno(conexion);
+       
+        negocio = new NegocioAlumno();
         fichalumno = new FichaAlumno();
+        
+        dlgAlu = new DlgAlumnos(frmmenu, true, this);
+        dlgAlu.setVisible(true);
+        
         jsPrint = null;
-
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        rs = conexion.getRs();
-        if (e.getActionCommand() == "Iniciar") {
+       
+        if ("Iniciar".equals(e.getActionCommand())) {
             try {
                // rs = conexion.getRs();
                 negocio.iniciar();
-                iniciarTabla(conexion.getRs());
+                iniciarTabla(negocio.getRsDeConexion());
                 //si la tabla de registros no está vacía
-                if (conexion.getRs().next()== true) {
+                if (negocio.getRsDeConexion().next()== true) {
                     //negocio.cargarDatosAlumno();
                     cargarDatosDeFichaAlumno();
                 }
             } catch (SQLException ex) {
                 System.out.println("Error en el botón 'Iniciar'");
             }
-        } else if (e.getActionCommand() == "Siguiente") {
+        } else if ("Siguiente".equals(e.getActionCommand())) {
             try {
                 //si hay siguiente registro, lo muestra
-                if (rs.next()) {
+                if (negocio.getRsDeConexion().next()) {
                     cargarDatosDeFichaAlumno();
                 }
             } catch (SQLException ex) {
                 System.out.println("Error en el botón 'Siguiente'");
             }
-        } else if (e.getActionCommand() == "Anterior") {
+        } else if ("Anterior".equals(e.getActionCommand())) {
             try {
                 //Si hay un registro anterior, lo muestra
-                if (rs.previous()) {
+                if (negocio.getRsDeConexion().previous()) {
                     //negocio.cargarDatosAlumno();
                     cargarDatosDeFichaAlumno();
                 }
             } catch (SQLException ex) {
                 System.out.println("Error en el botón 'Anterior'");
             }
-        } else if (e.getActionCommand() == "Altas") {
+        } else if ("Altas".equals(e.getActionCommand())) {
             fichalumno.setRegistro(Integer.parseInt(dlgAlu.getjTFRegistro().getText()));
             fichalumno.setDni(dlgAlu.getjTFDniAlu().getText());
             fichalumno.setNombre(dlgAlu.getjTFNombreAlu().getText());
             fichalumno.setApellido1(dlgAlu.getjTFApellido1Alu().getText());
             fichalumno.setApellido2(dlgAlu.getjTFApellido2Alu().getText());
             negocio.altas(fichalumno);
-        } else if (e.getActionCommand() == "Generar informe de alumnos") {
+        } else if ("Generar informe de alumnos".equals(e.getActionCommand())) {
             //TERMINAR MÁS ADELANTE. 
-        } else if (e.getActionCommand() == "Volver al menú") {
+        } else if ("Volver al menú".equals(e.getActionCommand())) {
             dlgAlu.dispose();
-        } else if (e.getActionCommand() == "Bajas") {
+        } else if ("Bajas".equals(e.getActionCommand())) {
             negocio.bajas(fichalumno);
-        } else if (e.getActionCommand() == "Buscar") {
+        } else if ("Buscar".equals(e.getActionCommand())) {
             negocio.buscarEnTextField(dlgAlu.getTextoABuscar().getText());
-            iniciarTabla(rs);
-            //mostrar(dlgAlu.getTextoABuscar().getText());
+            mostrar(dlgAlu.getTextoABuscar().getText());
         }
     }
 
     public void mostrar(String buscarEnTextfield) {
         try {
             VistaTabla modelo;
-            NegocioAlumno func = new NegocioAlumno(conexion);
+            NegocioAlumno func = new NegocioAlumno();
             func.buscarEnTextField(buscarEnTextfield);
-            modelo = new VistaTabla(conexion.getRs());
+            modelo = new VistaTabla(negocio.getRsDeConexion());
             jTablaAlumnos.setModel(modelo);
             /*
             VistaTabla v = new VistaTabla(rs);
@@ -130,10 +134,7 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
         jTablaAlumnos.setModel(v);
     }
 
-    public void iniciarDialog(Frame frm) {
-        dlgAlu = new DlgAlumnos(frm, true, this);
-        dlgAlu.setVisible(true);
-    }
+  
     
     @Override
     public void mouseClicked(MouseEvent e) {
