@@ -5,6 +5,8 @@
  */
 package ABD_Libros;
 
+import Principal.FrmMenu;
+
 
 /**
  *
@@ -13,7 +15,7 @@ package ABD_Libros;
 public class ABD_Libros {
     public static void main(String[] args) {
         
-        ClaseEventosLibros clEventosAlu = new ClaseEventosLibros();
-        
+        FrmMenu frm = new FrmMenu();
+        frm.setVisible(true);
     }
 }

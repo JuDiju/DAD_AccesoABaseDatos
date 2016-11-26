@@ -5,17 +5,15 @@
  */
 package ABD_Alumnos;
 
+import Principal.VistaTabla;
 import static ABD_Alumnos.DlgAlumnos.jTablaAlumnos;
 import Principal.FrmMenu;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.sf.jasperreports.engine.*;
 
 /**
@@ -27,10 +25,10 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
     //FrmAlumnos frm;
     DlgAlumnos dlgAlu;
     ResultSet rs;
-   // private ConexionAlumno conexion;
-    private NegocioAlumno negocio;
+    // private ConexionAlumno conexion;
+    private NegocioAlumno negocioAlumno;
     private FichaAlumno fichalumno;
-    
+
     private JasperPrint jsPrint;
     // private VistaTablaAlumnos rsmodel;
 
@@ -41,26 +39,39 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
 
         //conexion = claseConexion.getInstance();
         //this.dlgAlu = dlgAlu;
-       
-        negocio = new NegocioAlumno();
+        negocioAlumno = new NegocioAlumno();
         fichalumno = new FichaAlumno();
-        
+
         dlgAlu = new DlgAlumnos(frmmenu, true, this);
         dlgAlu.setVisible(true);
-        
+
         jsPrint = null;
+    }
+
+    public void cargarDatosDeFichaAlumno() {
+        fichalumno = negocioAlumno.cargarDatosAlumno();
+        dlgAlu.getjTFRegistro().setText(String.valueOf(fichalumno.getRegistro()));
+        dlgAlu.getjTFDniAlu().setText(fichalumno.getDni());
+        dlgAlu.getjTFNombreAlu().setText(fichalumno.getNombre());
+        dlgAlu.getjTFApellido1Alu().setText(fichalumno.getApellido1());
+        dlgAlu.getjTFApellido2Alu().setText(fichalumno.getApellido2());
+    }
+
+    public void iniciarTabla(ResultSet rs) {
+        VistaTabla v = new VistaTabla(rs);
+        jTablaAlumnos.setModel(v);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       
+
         if ("Iniciar".equals(e.getActionCommand())) {
             try {
-               // rs = conexion.getRs();
-                negocio.iniciar();
-                iniciarTabla(negocio.getRsDeConexion());
+                // rs = conexion.getRs();
+                negocioAlumno.iniciar();
+                iniciarTabla(negocioAlumno.getRsDeConexion());
                 //si la tabla de registros no está vacía
-                if (negocio.getRsDeConexion().next()== true) {
+                if (negocioAlumno.getRsDeConexion().next() == true) {
                     //negocio.cargarDatosAlumno();
                     cargarDatosDeFichaAlumno();
                 }
@@ -70,7 +81,7 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
         } else if ("Siguiente".equals(e.getActionCommand())) {
             try {
                 //si hay siguiente registro, lo muestra
-                if (negocio.getRsDeConexion().next()) {
+                if (negocioAlumno.siguiente()) {
                     cargarDatosDeFichaAlumno();
                 }
             } catch (SQLException ex) {
@@ -79,8 +90,7 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
         } else if ("Anterior".equals(e.getActionCommand())) {
             try {
                 //Si hay un registro anterior, lo muestra
-                if (negocio.getRsDeConexion().previous()) {
-                    //negocio.cargarDatosAlumno();
+                if (negocioAlumno.anterior()) {
                     cargarDatosDeFichaAlumno();
                 }
             } catch (SQLException ex) {
@@ -92,15 +102,15 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
             fichalumno.setNombre(dlgAlu.getjTFNombreAlu().getText());
             fichalumno.setApellido1(dlgAlu.getjTFApellido1Alu().getText());
             fichalumno.setApellido2(dlgAlu.getjTFApellido2Alu().getText());
-            negocio.altas(fichalumno);
+            negocioAlumno.altas(fichalumno);
         } else if ("Generar informe de alumnos".equals(e.getActionCommand())) {
             //TERMINAR MÁS ADELANTE. 
         } else if ("Volver al menú".equals(e.getActionCommand())) {
             dlgAlu.dispose();
         } else if ("Bajas".equals(e.getActionCommand())) {
-            negocio.bajas(fichalumno);
+            negocioAlumno.bajas(fichalumno);
         } else if ("Buscar".equals(e.getActionCommand())) {
-            negocio.buscarEnTextField(dlgAlu.getTextoABuscar().getText());
+            negocioAlumno.buscarEnTextField(dlgAlu.getTextoABuscar().getText());
             mostrar(dlgAlu.getTextoABuscar().getText());
         }
     }
@@ -110,7 +120,7 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
             VistaTabla modelo;
             NegocioAlumno func = new NegocioAlumno();
             func.buscarEnTextField(buscarEnTextfield);
-            modelo = new VistaTabla(negocio.getRsDeConexion());
+            modelo = new VistaTabla(negocioAlumno.getRsDeConexion());
             jTablaAlumnos.setModel(modelo);
             /*
             VistaTabla v = new VistaTabla(rs);
@@ -120,22 +130,6 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
         }
     }
 
-    public void cargarDatosDeFichaAlumno() {
-        fichalumno = negocio.cargarDatosAlumno();
-        dlgAlu.getjTFRegistro().setText(String.valueOf(fichalumno.getRegistro()));
-        dlgAlu.getjTFDniAlu().setText(fichalumno.getDni());
-        dlgAlu.getjTFNombreAlu().setText(fichalumno.getNombre());
-        dlgAlu.getjTFApellido1Alu().setText(fichalumno.getApellido1());
-        dlgAlu.getjTFApellido2Alu().setText(fichalumno.getApellido2());
-    }
-
-     public void iniciarTabla(ResultSet rs) {
-        VistaTabla v = new VistaTabla(rs);
-        jTablaAlumnos.setModel(v);
-    }
-
-  
-    
     @Override
     public void mouseClicked(MouseEvent e) {
         cargarDatosDeFichaAlumno();
@@ -147,18 +141,16 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
+
     /*
     public void InicializarTabla() {
         try {

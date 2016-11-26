@@ -1,5 +1,6 @@
 package ABD_Alumnos;
 
+import Principal.ClaseConexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -12,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class NegocioAlumno {
 
-    final ConexionAlumno conexion;
+    final ClaseConexion conexion;
     ResultSet rs;
     public static final int COLUMN_ALUMNO_REGISTRO = 0;
     public static final int COLUMN_ALUMNO_DNI = 1;
@@ -21,13 +22,46 @@ public class NegocioAlumno {
     public static final int COLUMN_ALUMNO_APELLIDO2 = 4;
 
     public NegocioAlumno() {
-        conexion = new ConexionAlumno();
+        conexion = new ClaseConexion();
     }
     
     public ResultSet getRsDeConexion(){
         return conexion.getRs();
     }
     
+    public void conectar() {
+        ClaseConexion.crearConexion();
+    }
+    
+    public void iniciar() {
+        conectar();
+        String consulta = "SELECT * FROM alumnos";
+        //conexion.consultaConSelect(consulta);
+        rsDeConsultaSelect(consulta);
+    }
+    
+    public boolean siguiente() throws SQLException{
+        return rs.next(); 
+    }
+    
+    public boolean anterior() throws SQLException{
+      return rs.previous();
+    }
+    
+    public void rsDeConsultaSelect(String consulta){
+        conexion.consultaConSelect(consulta);
+        rs = conexion.getRs();
+    }
+    
+    public void buscarEnTextField(String fichaAlumno) {
+        //conectar();
+        String consulta = "SELECT * FROM alumnos WHERE dni like '%" + fichaAlumno + "%' "
+                + " OR nombre like '%" + fichaAlumno + "%' OR apellido1 like '%"
+                + fichaAlumno + "%' OR apellido2 like '%" + fichaAlumno + "%' ORDER BY nombre";
+        //conexion.consultaConSelect(consulta);
+        rsDeConsultaSelect(consulta);
+    }
+
     public void altas(FichaAlumno fichalumno) {
         try {
             //claseConexion.crearConexion();
@@ -55,25 +89,11 @@ public class NegocioAlumno {
             //JOptionPane.showMessageDialog(null, "Registro eliminado");
         //}
     }
-
-    public void iniciar() {
-        conectar();
-        String consulta = "SELECT * FROM alumnos";
-        conexion.consultaConSelect(consulta);
-    }
-
-    public void buscarEnTextField(String fichaAlumno) {
-        //conectar();
-        String consulta = "SELECT * FROM alumnos WHERE dni like '%" + fichaAlumno + "%' "
-                + " OR nombre like '%" + fichaAlumno + "%' OR apellido1 like '%"
-                + fichaAlumno + "%' OR apellido2 like '%" + fichaAlumno + "%' ORDER BY nombre";
-        conexion.consultaConSelect(consulta);
-    }
-
+    
     public FichaAlumno cargarDatosAlumno() {
         FichaAlumno fichaalu = new FichaAlumno();
         try {
-            rs = conexion.getRs();
+           
             fichaalu.setRegistro(rs.getInt("registro"));
             fichaalu.setDni(rs.getString("dni"));
             fichaalu.setNombre(rs.getString("nombre"));
@@ -89,10 +109,7 @@ public class NegocioAlumno {
         }
         return fichaalu;
     }
-
-    public void conectar() {
-        ConexionAlumno.crearConexion();
-    }
+   
 
     public int NumeroRegistros() throws Exception {
         int fila = -1;
