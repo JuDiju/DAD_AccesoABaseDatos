@@ -93,7 +93,7 @@ public class ClaseEventosAlumnos extends javax.swing.JDialog implements ActionLi
         } else if (e.getActionCommand() == "Volver al menú") {
             dlgAlu.dispose();
         } else if (e.getActionCommand() == "Bajas") {
-
+            negocio.bajas(fichalumno);
         } else if (e.getActionCommand() == "Buscar") {
             negocio.buscarEnTextField(dlgAlu.getTextoABuscar().getText());
             iniciarTabla(rs);

@@ -37,24 +37,25 @@ public class ConexionAlumno {
         }
     }
 
-    public void consultaConSelect(String consulta) {
+    public void consultaConInsertUpdateODelete(String consulta) {
         try {
             //Creamos el canal de Conexión
             stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             //Modifica los datos que le damos por consulta
-            stmt.executeUpdate(consulta);
+            int i = stmt.executeUpdate(consulta); 
+            
         } catch (SQLException ex) {
+            
             Logger.getLogger(DlgAlumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void consultaConInsertUpdateODelete(String consulta) {
+    public void consultaConSelect(String consulta) {
         try {
             //Creamos el canal de Conexión
             stmt = conn.createStatement();
             //Devuelve los datos buscados con el resulSet
             rs = stmt.executeQuery(consulta);
-
         } catch (SQLException ex) {
             Logger.getLogger(DlgAlumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
